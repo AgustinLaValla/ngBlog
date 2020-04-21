@@ -66,9 +66,7 @@ import { appReducer } from './app.reducer';
   providers: [
     {provide: StorageBucket, useValue: 'ngblog-99594.appspot.com'}
   ],
-  entryComponents: [
-    EditDialogComponent
-  ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }
