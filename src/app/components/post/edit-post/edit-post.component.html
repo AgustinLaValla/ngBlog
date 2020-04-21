@@ -1,0 +1,33 @@
+<div class="new-post-container">
+    <form [formGroup]="editPostForm" (ngSubmit)="editPost()">
+        <mat-form-field>
+            <mat-label>Title</mat-label>
+            <input matInput type="text" placeholder="Title"  formControlName="titlePost">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Content</mat-label>
+            <textarea matInput type="text" placeholder="Content post"  formControlName="contentPost"></textarea>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Tag</mat-label>
+            <mat-select  formControlName="tagsPost" multiple>
+                <mat-option value="life">Life</mat-option>
+                <mat-option value="programming">Programming</mat-option>
+                <mat-option value="Sport">Sport</mat-option>
+                <mat-option value="Beauty">Beauty</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div class="container-input-field">
+            <mat-label class="custom-file">
+                <button type="button" class="file-btn" (click)="fileInput.click()" mat-raised-button color="accent">
+                    <mat-icon>cloud_upload</mat-icon>
+                    <span>Choose Image</span> 
+                </button>
+                <input type="file" #fileInput (change)="handleImage($event)" style="display: none;">
+            </mat-label>
+        </div>
+        <div style="padding-top: 15px;" class="container-button">
+            <button class="save-btn" mat-raised-button type="submit" color="warn">Save Changes</button>
+        </div>
+    </form>
+</div>

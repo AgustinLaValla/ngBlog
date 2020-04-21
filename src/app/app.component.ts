@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from './app.reducer';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'ngBlog';
+  title = 'ngBlog'
+  constructor(private store:Store<AppState>) { 
+    this.store.select('auth').subscribe(); 
+  }
 }

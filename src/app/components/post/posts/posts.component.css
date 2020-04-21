@@ -1,0 +1,56 @@
+.container { 
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns: 24% 24% 24% 24%;
+    grid-column-gap: 10px;
+    grid-row-gap: 15px;
+    justify-content: center;
+}
+.post-card { 
+    background: #444 !important; 
+    color: #fff; 
+    border-radius: 5px; 
+    padding: 20px; 
+    font-size: 150px;
+}
+
+a {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+.life {
+    background-color: #ffff00 !important;
+}
+
+.programming { 
+    background-color: #aa00cc !important;
+}
+.sport{
+    background-color: #dd0033 !important;
+}
+.beauty{
+    background-color: #00cc44 !important;
+}
+
+@media screen and (min-width:600px) and (max-width:959px) { 
+    .container { 
+        margin-top: 25px;
+        display: grid;
+        grid-template-columns: 49% 49%;
+        grid-column-gap: 10px;
+        grid-row-gap: 15px;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width:599px) { 
+    .container { 
+        margin-top: 25px;
+        display: grid;
+        grid-template-columns: 98%;
+        /* grid-column-gap: 10px; */
+        grid-row-gap: 15px;
+        justify-content: center;
+    }
+}

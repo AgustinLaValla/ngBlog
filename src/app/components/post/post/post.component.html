@@ -1,0 +1,11 @@
+<div class="container" *ngIf="post">
+    <mat-card class="post-card mat-elevation-z10">
+        <img  style="max-height: 450px;" matCardImage src="{{post.imagePost}}" class="align-center">
+        <mat-card-content>
+            <mat-card-title>
+                {{ post.titlePost }}
+            </mat-card-title>
+            <p>{{post.contentPost}}</p>
+        </mat-card-content>
+    </mat-card>
+</div>

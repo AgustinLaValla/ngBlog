@@ -1,0 +1,27 @@
+.new-post-container { 
+    display: flex;
+    flex-direction: column;
+}
+form { 
+    margin-bottom: 20px;
+    text-align: center;
+}
+.mat-form-field { 
+    width: 100%;
+}
+textarea { 
+    height: 70px;
+}
+.container-input-field{
+    margin-top: 25px;
+}
+.save-btn { 
+    width: 100%;
+    background: #4e0561;
+}
+.save-btn:hover { 
+    background:  #3c034b;
+}
+.file-btn { 
+    width: 100%;
+}

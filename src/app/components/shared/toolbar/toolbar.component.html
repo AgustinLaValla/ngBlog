@@ -1,0 +1,13 @@
+<mat-toolbar color="primary" class="z-depth-4"> 
+
+    <a style="font-size: 1rem;" mat-flat-button color="primary" [routerLink]="['/']">{{appName}}</a>
+
+    <span style="flex: 1 1 auto;"></span>
+
+    <a *ngIf="!isAuth" style="font-size: 1rem;" mat-flat-button color="primary" [routerLink]="['/login']">Login</a>
+    <a style="font-size: 1rem;" mat-flat-button color="primary" [routerLink]="['/admin']">Admin</a>
+    <a style="font-size: 1rem;" mat-flat-button color="primary" [routerLink]="['/about']">About</a>
+    <a *ngIf="isAuth" (click)="logout()" style="font-size: 1rem;" mat-flat-button color="primary">Logout</a>
+
+    
+</mat-toolbar>

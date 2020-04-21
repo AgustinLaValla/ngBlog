@@ -1,0 +1,30 @@
+/* Structure */
+table {
+    width: 100%;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+.mat-form-field { 
+  font-size: 1rem;
+  width: 90%;
+  margin:0 auto;
+  display: block;
+  margin-top: 1rem;
+}
+.addBtn { 
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 40px; 
+  float: right;
+  width: 300px;
+}
+
+@media screen and (max-width:599px) { 
+  .image-column, .image-title  {
+    display: none;
+  }
+}

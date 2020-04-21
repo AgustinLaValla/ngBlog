@@ -1,0 +1,21 @@
+<div class="container" >
+<mat-card class="post-card" *ngFor="let post of posts">
+    <mat-card-header>
+        <mat-card-title>
+            <a [routerLink]="['/postDetail', post.id]">{{ post.titlePost }}</a>
+        </mat-card-title>
+    </mat-card-header>
+    <img *ngIf="post.imagePost != null && post.imagePost != undefined && post.imagePost != '' " matCardImage src="{{post.imagePost}}">
+    <img  *ngIf="post.imagePost == null || post.imagePost == undefined || post.imagePost == '' " 
+           src="../../../../assets/img/no-image-available.png" matCardImage>
+    <mat-card-content>
+        <p>{{post.contentPost | slice:0:150}}</p>
+    </mat-card-content>
+    <mat-divider></mat-divider>
+    <mat-card-actions>
+        <mat-chip-list>
+                <mat-chip *ngFor="let tag of post.tagsPost" [ngClass]="tag"> {{tag}} </mat-chip>
+        </mat-chip-list>
+    </mat-card-actions>
+</mat-card>
+</div>

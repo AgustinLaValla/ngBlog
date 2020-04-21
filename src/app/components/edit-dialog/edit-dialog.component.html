@@ -1,0 +1,12 @@
+<h2>{{ data.message }}</h2>
+<div>
+
+    <div *ngIf="data.content; else showNewForm">
+        <app-edit-post (closeModal)="onClose($event)" [post]="data.content"></app-edit-post>
+    </div>
+
+    <ng-template #showNewForm>
+        <app-new-post (closeModal)="onClose($event)"></app-new-post>
+    </ng-template>
+
+</div>

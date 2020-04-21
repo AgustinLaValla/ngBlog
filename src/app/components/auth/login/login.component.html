@@ -1,0 +1,53 @@
+<div class="container" >
+    <mat-card style="padding: 15px 0;" >
+
+        <mat-card-header>
+            <mat-card-title class="form-child-styles">Login</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <form #f="ngForm" >
+
+                <mat-form-field  class="material-input-field form-child-styles ">
+                    <input matInput type="text" 
+                           placeholder="Email" 
+                           name="email" 
+                           ngModel 
+                           required
+                           #email="ngModel"
+                           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                           >
+
+
+                    <mat-error *ngIf="email.hasError('required')">Field shouldn't be empty!</mat-error>
+                    <mat-error *ngIf="email.hasError('pattern')">Email is no valid</mat-error>
+
+                </mat-form-field>
+
+                <mat-form-field class="material-input-field form-child-styles ">
+                    <input matInput type="password" 
+                           placeholder="Password" 
+                           name="password" 
+                           ngModel 
+                           required 
+                           #password="ngModel"
+                           minlength="{{ minLength }}"
+                           >
+                    
+                    <mat-error *ngIf="password.hasError('required')">Field shouldn't be empty</mat-error>
+                    <mat-error *ngIf="password.hasError('minlength')">Field must contains at least six words</mat-error>
+                    <mat-hint align="end">{{ password.value?.length }}/{{ minLength }}</mat-hint>   
+
+                </mat-form-field>
+
+            </form>
+
+        </mat-card-content>
+
+        <mat-card-actions style="margin-bottom: 10px;">
+            <button (click)="login(f)" mat-raised-button color="primary" [disabled]="!f.valid" >Login</button>
+        </mat-card-actions>
+
+    </mat-card>
+</div>

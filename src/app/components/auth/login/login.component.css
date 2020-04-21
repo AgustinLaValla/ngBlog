@@ -1,0 +1,37 @@
+.container { 
+    height: 90vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f4f4;
+}
+
+.mat-card { 
+    width: 350px;
+    text-align: center;
+}
+
+.mat-card-header{
+    justify-content: center;
+ }
+
+.mat-card-title, .mat-card-subtitle { 
+    text-align: center;
+}
+
+.material-input-field { 
+    width: 90%;
+}
+
+
+.form-child-styles { 
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+}
+
+button { 
+    width: 90%;
+    text-transform: uppercase;
+}

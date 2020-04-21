@@ -1,0 +1,57 @@
+<mat-form-field>
+  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+</mat-form-field>
+
+  <button (click)="addNewPost()" class="addBtn" mat-raised-button color="accent" matTooltip="Add New Post">
+      <mat-icon>add</mat-icon>
+      New Post
+  </button>
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort>
+
+    <!-- Image Column -->
+    <ng-container matColumnDef="imagePost">
+      <th class="image-title"  mat-header-cell *matHeaderCellDef > image </th>
+      <td  mat-cell *matCellDef="let element"> 
+          <img  class="image-column" *ngIf="element.imagePost != '' && !(element.imagePost == null || element.imagePost == undefined) " 
+                style="height: 75px; width: 100px; border-radius: 100%" 
+                [src]="element.imagePost">
+          
+          <img  class="image-column" *ngIf="element.imagePost == null || element.imagePost == undefined || element.imagePost == '' " 
+                style="height: 75px; width: 100px; border-radius: 100%" 
+                src="../../../../assets/img/no-image-available.png">
+      </td>
+    </ng-container>
+
+    <!-- Title Column -->
+    <ng-container matColumnDef="titlePost">
+      <th mat-header-cell *matHeaderCellDef  mat-sort-header> Title </th>
+      <td mat-cell *matCellDef="let element"> {{element.titlePost}} </td>
+    </ng-container>
+
+    <!-- Tags Column -->
+    <ng-container matColumnDef="tagsPost">
+      <th mat-header-cell *matHeaderCellDef  mat-sort-header> Tags </th>
+      <td mat-cell *matCellDef="let element"> {{element.tagsPost}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef  mat-sort-header> Actions </th>
+      <td mat-cell *matCellDef="let element"> 
+          <button (click)="edit(element)" mat-raised-button color="primary" matTooltip="Edit">
+              <mat-icon >edit</mat-icon>  
+          </button>  &nbsp;
+          <button (click)="delete(element)" mat-raised-button color="warn" matTooltip="Delete">
+              <mat-icon>delete</mat-icon>  
+          </button>  
+      </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+</div>
