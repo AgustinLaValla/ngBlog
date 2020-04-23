@@ -39,7 +39,7 @@ export class TableComponent implements OnInit, OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(new loadAllPosts)
+    this.store.dispatch(loadAllPosts())
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
@@ -73,7 +73,7 @@ export class TableComponent implements OnInit, OnInit {
       // reverseButtons: true
     }).then((result) => {
       if (result.value) {
-        this.store.dispatch(new loadDeletePost(post))
+        this.store.dispatch(loadDeletePost({post}))
           Swal.fire(
             'Borrado',
             'Los datos del post han sido eliminados',

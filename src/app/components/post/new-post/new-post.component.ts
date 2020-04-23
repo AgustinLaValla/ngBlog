@@ -30,10 +30,10 @@ export class NewPostComponent implements OnInit {
   addNewPost(newPostForm:PostI) {
     
     if(this.postImage) { 
-      this.store.dispatch( new loadAddPost(newPostForm, this.postImage) );
+      this.store.dispatch(loadAddPost({post:newPostForm, imagePost:this.postImage}) );
       this.closeModal.emit(true);
     }else{
-      this.store.dispatch(new loadAddPost(newPostForm));
+      this.store.dispatch(loadAddPost({post:newPostForm}));
       this.closeModal.emit(true);
     }
 

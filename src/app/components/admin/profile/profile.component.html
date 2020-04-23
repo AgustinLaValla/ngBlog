@@ -1,15 +1,14 @@
-<form [formGroup]="profile">
-    <mat-card>
-        <mat-card-header>
+<mat-card>
+    <mat-card-header>
 
-            <!-- <div style="margin: 0 auto;" class="label button"> -->
-                <img matTooltip="Click to Change Image" [src]="profile.value.photoURL" (click)="changeProfileImage.click()">
-                <input hidden type="file" #changeProfileImage  (change)="updateProfileImage($event)" >
-            <!-- </div> -->
+        <!-- <div style="margin: 0 auto;" class="label button"> -->
+        <img *ngIf="photoURL" matTooltip="Click to Change Image" src="{{photoURL}}" (click)="changeProfileImage.click()">
+        <input hidden type="file" #changeProfileImage (change)="updateProfileImage($event)">
+        <!-- </div> -->
 
-        </mat-card-header>
-        <mat-card-content>
-
+    </mat-card-header>
+    <mat-card-content>
+        <form [formGroup]="profile">
             <mat-form-field>
                 <mat-label>Name</mat-label>
                 <input type="text" matInput placeholder="User Name" formControlName="displayName">
@@ -23,6 +22,6 @@
                 <button (click)="onSaveUser(profile.value)" mat-raised-button color="primary"
                     class="submitBtn">Save</button>
             </div>
-        </mat-card-content>
-    </mat-card>
-</form>
+        </form>
+    </mat-card-content>
+</mat-card>

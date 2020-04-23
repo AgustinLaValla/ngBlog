@@ -1,32 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { AuthService } from '../services/auth.service';
-import { LOAD_UPDATE_PROFILE_PIC, loadUpdateProfile, loadUpdateProfileSuccess, loadUpdateProfileFailed, LOAD_UPDATE_DISPLAYNAME, loadUpdateDisplayNameSuccess, loadUpdateDisplayNameFailed, loadUpdateDisplayName } from '../components/auth/auth.actions';
-import { map, switchMap, catchError } from 'rxjs/operators';
-import { UserI } from '../shared/model/user.interface';
+import { switchMap, catchError, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { loadUpdateProfile, loadUpdateProfileFailed, loadUpdateDisplayName } from '../components/auth/auth.actions';
+import { UiService } from '../services/ui.service';
 
 @Injectable()
 export class AuthEffects {
 
-    constructor(private action$: Actions, private authService:AuthService) { }
+    constructor(private action$: Actions, 
+                private authService:AuthService) { }
     
-    @Effect() loadUpdatePic$ = this.action$.pipe(
-        ofType(LOAD_UPDATE_PROFILE_PIC),
-        map((profilePic: loadUpdateProfile) => profilePic.profilePic),
-        switchMap((profilePic: File) => of(this.authService.updateProfilePicture(profilePic)).pipe(
-            map((profilePicUrl:string)=> new loadUpdateProfileSuccess(profilePicUrl)),
-            catchError((error:any) => of(new loadUpdateProfileFailed(error)))
+    //loadUpdatePic Effect
+    loadUpdatePic$$ = createEffect(() => this.action$.pipe(
+        ofType(loadUpdateProfile),
+        switchMap(({profilePic}) => of(this.authService.updateProfilePicture(profilePic)).pipe(
+            catchError((error:any) => of(loadUpdateProfileFailed(error)))
         ))
-    )
+    ), {dispatch:false});
 
-    @Effect() loadUpdateDisplayName = this.action$.pipe(
-        ofType(LOAD_UPDATE_DISPLAYNAME),
-        map((action:loadUpdateDisplayName)=> action.profile),
-        switchMap((profile:UserI) => of(this.authService.updateProfile(profile)).pipe(
-            map(()=> new loadUpdateDisplayNameSuccess(profile)),
-            catchError((error:any) => of( new loadUpdateDisplayNameFailed(error) ))
-        ))
-    )
+    //loadUpdateName Effect
+    loadUpdateDisplayName$ = createEffect(() => this.action$.pipe(
+        tap(() => console.log('Por acá pasó')),
+        ofType(loadUpdateDisplayName),
+        switchMap(({profile}) => of(this.authService.updateProfile(profile)))
+    ),{dispatch:false});
 
 }

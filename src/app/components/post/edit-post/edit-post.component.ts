@@ -25,9 +25,7 @@ export class EditPostComponent implements OnInit {
     'id': new FormControl('', Validators.required)
   });
 
-
   constructor(private store:Store<AppState>) { }
-
 
   ngOnInit() {
     this.image = this.post.imagePost
@@ -38,10 +36,10 @@ export class EditPostComponent implements OnInit {
   editPost() { 
     if(this.image === this.originalImage) {
       this.editPostForm.value.imagePost = this.originalImage;
-      this.store.dispatch(new loadEditPost(this.editPostForm.value));
+      this.store.dispatch(loadEditPost({post:this.editPostForm.value}));
       this.closeModal.emit(true);
     }else{
-      this.store.dispatch(new loadEditPost(this.editPostForm.value, this.image));
+      this.store.dispatch(loadEditPost({post:this.editPostForm.value, imagePost:this.image}));
       this.closeModal.emit(true);
     }
    }

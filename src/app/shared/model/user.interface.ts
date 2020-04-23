@@ -5,4 +5,4 @@ export interface UserI {
     displayName?:string;
     uid?: string;
     phoneNumber?:string;
-}
+};

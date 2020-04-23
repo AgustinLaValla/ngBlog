@@ -18,6 +18,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const materialComponents = [
     MatButtonModule,
@@ -37,11 +38,12 @@ const materialComponents = [
     MatSortModule,
     MatTooltipModule,
     MatDialogModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSnackBarModule
 ]
 
 @NgModule({
-    imports: [ CommonModule, materialComponents ],
-    exports: [materialComponents],
+    imports: [ CommonModule, [...materialComponents] ],
+    exports: [[...materialComponents]],
 })
 export class MaterialModule {}

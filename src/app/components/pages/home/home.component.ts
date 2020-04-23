@@ -3,7 +3,7 @@ import { PostI } from 'src/app/shared/model/post.interface';
 import { Store } from '@ngrx/store';
 import { AppState, getLoadingValue, getAllPosts, getOperationFailed } from 'src/app/app.reducer';
 import { Subscription } from 'rxjs';
-import * as fromUI from '../../shared/loading.actions';
+import * as fromUI from '../../shared/ui/loading.actions';
 import { loadAllPosts } from '../../post/post.actions';
 import Swal from 'sweetalert2';
 
@@ -30,13 +30,14 @@ export class HomeComponent implements OnInit {
     });
     this.operationFailedSubscription = this.store.select(getOperationFailed).subscribe((error:any) => {
       if(error){
+        console.log(error);
         this.onError(error)
       }
     });
   }
 
   ngOnInit() {
-    this.store.dispatch(new loadAllPosts());
+    this.store.dispatch(loadAllPosts());
   }
 
   

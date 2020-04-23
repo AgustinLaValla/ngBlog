@@ -3,10 +3,12 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { PostI } from 'src/app/shared/model/post.interface';
 
 import { Store } from '@ngrx/store';
-import { AppState, getLoadingValue, getSinglePost } from 'src/app/app.reducer';
-import { deactivateLoading } from '../../shared/loading.actions';
+import { AppState, getLoadingValue, getSinglePost, getOperationFailed } from 'src/app/app.reducer';
+import { deactivateLoading } from '../../shared/ui/loading.actions';
 import { Subscription } from 'rxjs';
 import { loadSinglePost } from '../../post/post.actions';
+import { loadShowHttpErrorSnack } from '../../shared/ui/snack-error.actions';
+import { isNullOrUndefined } from 'util';
 
 
 @Component({
@@ -27,12 +29,13 @@ export class PostDetailsComponent implements OnInit {
     this.ui_subscription = this.store.select(getLoadingValue).subscribe(loading => this.loading = loading);
 
     this.activatedRoute.params.subscribe((params: Params) => {
-      this.store.dispatch(new loadSinglePost(params.id))
+      this.store.dispatch(loadSinglePost({postsId:params.id}))
     });
     this.store.select(getSinglePost).subscribe((post: PostI) => {
       this.post = post;
       this.store.dispatch(new deactivateLoading())
-    })
+    });
+    this.store.select(getOperationFailed).subscribe(console.log)
   }
 
   ngOnInit() { }

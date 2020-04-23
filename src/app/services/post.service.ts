@@ -6,7 +6,7 @@ import { PostI } from '../shared/model/post.interface';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AppState } from '../app.reducer';
 import { Store } from '@ngrx/store';
-import { activateLoading } from '../components/shared/loading.actions';
+import { activateLoading } from '../components/shared/ui/loading.actions';
 import { resolve } from 'url';
 
 @Injectable({
@@ -23,7 +23,7 @@ export class PostService {
               private storage: AngularFireStorage,
               private store:Store<AppState>) {
     this.postColl = this.afs.collection<PostI>('posts');
-  }
+  };
 
   public getAllPost(): Observable<PostI[]> {
     this.store.dispatch( new activateLoading() );
@@ -31,13 +31,13 @@ export class PostService {
       const post = ac.payload.doc.data() as PostI;
       post.id = ac.payload.doc.id;
       return { ...post };
-    })))
-  }
+    })));
+  };
 
   public getSinglePost(id: string): Observable<PostI> {
     this.store.dispatch( new activateLoading() )
     return this.afs.doc<PostI>(`posts/${id}`).valueChanges()
-  }
+  };
 
   //ADD POST
   public addPost(post: PostI, imagePost?:File) {
@@ -46,10 +46,10 @@ export class PostService {
       const postId = docRef.id;
       if(imagePost) {
        this.addOrUpdateImage(postId, imagePost)
-      }
-    })
-    return this.imgURL
-  }
+      };
+    });
+    return this.imgURL  
+  };
   
   //UPDATE POST
   public updatePost(post: PostI,imagePost?:File):string {
@@ -57,17 +57,17 @@ export class PostService {
         const postId = post.id
         if(imagePost) {
           this.addOrUpdateImage(postId, imagePost);
-        }
-      })
+        };
+      });
     return this.imgURL;
-  }
+  };
   //DELETE POST
   public deletePost(post:PostI) {
     if(post.imagePost != null && post.imagePost != undefined && post.imagePost != ''){
       this.storage.ref(`postImages/${post.id}`).delete();
-    }
+    };
     return this.postColl.doc(post.id).delete();
-  }
+  };
 
   //ADD OR UPDATE IMAGE
   public addOrUpdateImage(postId:string, imagePost) {
@@ -75,9 +75,9 @@ export class PostService {
       this.storage.ref(`postImages/${postId}`).getDownloadURL().subscribe((imageURL: string) => {
           this.postColl.doc(postId).update({imagePost: imageURL});
           this.imgURL = imageURL;
-      })
-    })
+      });
+    });
     // return this.imgURL;
-  }
+  };
 
-}
+};

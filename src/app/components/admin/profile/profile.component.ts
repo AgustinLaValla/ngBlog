@@ -1,13 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { UserI } from '../../../shared/model/user.interface'
-import { AppState, getOperationFailed } from 'src/app/app.reducer';
+import { AppState, getAuthError, getUserData, getProfilePic } from 'src/app/app.reducer';
 import { Store } from '@ngrx/store';
-import { getUserData } from '../../auth/auth.reducer';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { loadUpdateProfile, loadUpdateDisplayName } from '../../auth/auth.actions';
+
 
 @Component({
   selector: 'app-profile',
@@ -23,18 +22,29 @@ export class ProfileComponent implements OnInit, OnDestroy {
   });
   public photoURL:string;
   private operationFailedSubscription = new Subscription();
-  
 
-  constructor(private store:Store<AppState>) { }
+
+  constructor(private store:Store<AppState>) {
+    this.store.select(getProfilePic).subscribe((photoURL) => {
+      console.log(photoURL);
+      this.photoURL = photoURL;
+    })
+   }
 
   ngOnInit() {
-      this.store.select('auth').subscribe((authState) => {
-      this.initValueForm(authState.userData);
+      this.store.select(getUserData).subscribe((userData) => {
+        if(userData) {
+          this.photoURL = userData.photoURL;
+          console.log();
+      }
+      this.initValueForm(userData);
     })
-    this.operationFailedSubscription = this.store.select(getOperationFailed).subscribe((error:any) =>{ 
+    this.operationFailedSubscription = this.store.select(getAuthError).subscribe((error:any) =>{ 
+      console.log(error);
       if(error) { 
         this.onError(error)
-      }
+      };
+  
     });
   }
 
@@ -49,11 +59,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   public onSaveUser(profile:UserI) {
-    this.store.dispatch(new loadUpdateDisplayName(profile));
+    console.log(profile)
+    this.store.dispatch(loadUpdateDisplayName({profile:profile}));
    }
 
    updateProfileImage(event) { 
-     this.store.dispatch(new loadUpdateProfile(event.target.files[0]))
+     this.store.dispatch(loadUpdateProfile({profilePic:event.target.files[0]}))
    }
 
    onError(error:any) { 

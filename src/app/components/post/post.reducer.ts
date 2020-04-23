@@ -1,6 +1,6 @@
 import * as fromPOST from './post.actions';
 import { PostI } from 'src/app/shared/model/post.interface';
-import { InitialState } from '@ngrx/store/src/models';
+import { createReducer, on, Action } from '@ngrx/store';
 
 export interface PostState {
     all_post: PostI[],
@@ -14,97 +14,92 @@ const initialState: PostState = {
     error: null
 }
 
-export function postReducer(state: PostState = initialState, action: fromPOST.actions) {
-    switch (action.type) {
+const reducer = createReducer(
+    initialState,
+    on(fromPOST.loadAllPostsSuccess, (state, action) => {
         //LOAD ALL POST
-        case fromPOST.LOAD_ALL_POSTS_SUCCESS:
-            return {
-                ...state,
-                all_post: [...action.posts.map(post => post)],
-                single_post: null
-            }
-        case fromPOST.LOAD_ALL_POSTS_FAILED:
-            return {
-                ...state,
-                error: { ...action.error }
-            }
-
-        //LOAD SINGLEPOST
-        case fromPOST.LOAD_SINGLE_POST_SUCCESS:
-            return {
-                ...state,
-                all_post: [],
-                single_post: { ...action.post }
-            }
-
-        case fromPOST.LOAD_SINGLE_POST_FAILED:
-            return {
-                ...state,
-                error: { ...action.error }
-            }
-
-
-        //LOAD ADD POST
-        case fromPOST.LOAD_ADD_POST_SUCCESS: {
-            let newPost = { ...action.post };
-            if (action.imageUrl) {
-                newPost.imagePost = action.imageUrl;
-            }
-            let newState: PostState = {
-                ...state,
-                single_post: null,
-                all_post: [...state.all_post, newPost]
-            }
-            return newState
+        return {
+            ...state,
+            all_post: [...action.posts.map(post => post)],
+            single_post: null
+        };
+    }),
+    on(fromPOST.loadAllPostsFailed, (state, action) => {
+        return {
+            ...state,
+            error: { ...action.error }
+        };
+    }),
+    on(fromPOST.loadSinglePostSuccess, (state, action) => {
+        return {
+            ...state,
+            all_post: [],
+            single_post: { ...action.post }
+        };
+    }),
+    on(fromPOST.loadSinglePostFailed, (state, action) => {
+        return {
+            ...state,
+            error: { ...action.error }
         }
-
-
-        case fromPOST.LOAD_ADD_POST_FAILED:
-            return {
-                ...state,
-                error: { ...action.error }
-            }
-
-        //LOAD EDIT POST
-        case fromPOST.LOAD_EDIT_POST_SUCCESS:{
-            let new_Post = { ...action.post };
-            if (action.imageUrl) {
-                new_Post.imagePost = action.imageUrl;
-            }
-            let new_State: PostState = {
-                ...state,
-                single_post: null,
-                all_post: [...state.all_post, new_Post]
-            }
-            return new_State
+    }),
+    on(fromPOST.loadAddPostSuccess, (state, action) => {
+        let newPost = { ...action.post };
+        if (action.imageUrl) {
+            newPost.imagePost = action.imageUrl;
         }
+        let newState: PostState = {
+            ...state,
+            single_post: null,
+            all_post: [...state.all_post, newPost]
+        }
+        return newState;
+    }),
+    on(fromPOST.loadAddPostFailed, (state, action) => {
+        return {
+            ...state,
+            error: { ...action.error }
+        };
+    }),
+    on(fromPOST.loadEditPostSuccess, (state, action) => {
+        let new_Post = { ...action.post };
+        if (action.imageUrl) new_Post.imagePost = action.imageUrl;
 
-
-        case fromPOST.LOAD_EDIT_POST_FAILED:
-            return {
-                ...state,
-                error: {  ...action.error}
-            }
-
-
-        case fromPOST.LOAD_DELETE_POST_SUCCESS: 
-        return {  
+        const allPosts = state.all_post.filter((post: PostI) => {
+            if (post.id === action.post.id) return new_Post;
+            else return post
+        });
+        let new_State: PostState = {
+            ...state,
+            single_post: null,
+            all_post: allPosts
+        }
+        return new_State
+    }),
+    on(fromPOST.loadEditPostFailed, (state, action) => {
+        return {
+            ...state,
+            error: { ...action.error }
+        };
+    }),
+    on(fromPOST.loadDeletePostSuccess, (state, action) => {
+        return {
             ...state,
             all_post: [...state.all_post.filter(post => post.id == action.postId)]
-        }
+        };
+    }),
+    on(fromPOST.loadDeletePostFailed, (state, action) => {
+        return {
+            ...state,
+            error: { ...action.error }
+        };
+    })
+);
 
-
-        case fromPOST.LOAD_DELETE_POST_FAILED:
-            return { 
-                ...state,
-                error: {...action.error}
-            }
-
-        default: return state;
-
-    }
-}
+export function postReducer(state: PostState | undefined = initialState, action: Action): PostState {
+    return reducer(state, action);
+};
 
 export const getAllPostsSelector = (state: PostState) => state.all_post;
 export const getSinglePostSelector = (state: PostState) => state.single_post;
-export const getOpeationFailedSelector = (state:PostState) => state.error;
+export const getOpeationFailedSelector = (state: PostState) => state.error;

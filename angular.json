@@ -123,5 +123,8 @@
       }
     }
   },
-  "defaultProject": "ngBlog"
+  "defaultProject": "ngBlog",
+  "cli": {
+    "analytics": false
+  }
 }
