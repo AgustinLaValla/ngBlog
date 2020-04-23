@@ -14,42 +14,52 @@ import Swal from 'sweetalert2';
 })
 export class HomeComponent implements OnInit {
 
-  public posts: PostI[] = [];
+  private ui_subscription = new Subscription();
   public loading: boolean = false;
 
-  public ui_subscription = new Subscription();
-  public posts_subscription = new Subscription();
-  public operationFailedSubscription = new Subscription();
+  public posts: PostI[] = [];
+  private posts_subscription = new Subscription();
+
+  private operationFailedSubscription = new Subscription();
 
   constructor(private store: Store<AppState>) {
+    this.loadingSubscription();
+    this.postsSubscription();
+    this.errorSubscription();
+  };
 
-    this.ui_subscription = this.store.select(getLoadingValue).subscribe(loading => this.loading = loading)
+  ngOnInit() {
+    this.store.dispatch(loadAllPosts());
+  };
+
+  loadingSubscription() {
+    this.ui_subscription = this.store.select(getLoadingValue).subscribe(loading => this.loading = loading);
+  };
+
+  postsSubscription() {
     this.posts_subscription = this.store.select(getAllPosts).subscribe((posts: PostI[]) => {
       this.posts = posts;
       this.store.dispatch(new fromUI.deactivateLoading());
     });
-    this.operationFailedSubscription = this.store.select(getOperationFailed).subscribe((error:any) => {
-      if(error){
-        console.log(error);
-        this.onError(error)
-      }
+  }
+
+  errorSubscription() {
+    this.operationFailedSubscription = this.store.select(getOperationFailed).subscribe((error: any) => {
+      if (error) {
+        this.onError(error);
+      };
     });
   }
 
-  ngOnInit() {
-    this.store.dispatch(loadAllPosts());
-  }
-
-  
-  onError(error:any) { 
+  onError(error: any) {
     Swal.fire('Error!', error.message, 'error');
-  }
+  };
 
 
   ngOnDestroy(): void {
     this.ui_subscription.unsubscribe();
     this.posts_subscription.unsubscribe();
     this.operationFailedSubscription.unsubscribe();
-  }
+  };
 
 }

@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from './app.reducer';
+import { Component, Inject } from '@angular/core';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +8,7 @@ import { AppState } from './app.reducer';
 })
 export class AppComponent {
   title = 'ngBlog'
-  constructor(private store:Store<AppState>) { 
-    this.store.select('auth').subscribe(); 
-  }
-}
+  constructor(@Inject(AuthService) private authService: AuthService) { 
+    this.authService.initApp();
+  };
+};

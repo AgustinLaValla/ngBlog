@@ -15,7 +15,10 @@ export class ToolbarComponent implements OnInit {
   public isAuth:boolean = false;
 
   constructor(public authService:AuthService, store:Store<AppState>) { 
-    store.select(getCurrentUserState).subscribe((isAuth:boolean)=> this.isAuth = isAuth);
+    store.select(getCurrentUserState).subscribe((isAuth:boolean)=> {
+      console.log(isAuth);
+      this.isAuth = isAuth
+    });
   }
 
   ngOnInit() { }

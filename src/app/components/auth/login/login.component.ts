@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
-// import { User } from 'src/app/shared/model/user.interface';
 
 @Component({
   selector: 'app-login',
@@ -14,12 +13,10 @@ export class LoginComponent implements OnInit {
 
   public minLength:number = 8;
 
-  ngOnInit() {
-  }
-
+  ngOnInit() { }
 
   login(form:NgForm){
-    this.auth.singIn({email: form.value.email, password:form.value.password})
-  }
+    this.auth.signIn({email: form.value.email, password:form.value.password});
+  };
 
-}
+};

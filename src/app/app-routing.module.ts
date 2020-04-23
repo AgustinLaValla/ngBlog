@@ -9,7 +9,8 @@ const routes: Routes = [
     { path: 'postDetail/:id', loadChildren: () => import('./components/pages/post-details/post-details.module').then(m => m.PostDetailsModule) },
     { path: 'about', loadChildren: () => import('./components/pages/about/about.module').then(m => m.AboutModule) },
     { path: 'login', loadChildren: () => import('./components/auth/login/login.module').then(m => m.LoginModule) },
-    { path: '', redirectTo: 'home', pathMatch: 'full'}
+    { path: '', redirectTo: 'home', pathMatch: 'full'},
+    // { path: '**', redirectTo: 'home', pathMatch: 'full'}
   ]},
  
   { path: 'admin', loadChildren: () => import('./components/admin/admin.module').then(m => m.AdminModule), canActivate:[AuthGuard] },

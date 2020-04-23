@@ -7,8 +7,7 @@ import { AppState, getLoadingValue, getSinglePost, getOperationFailed } from 'sr
 import { deactivateLoading } from '../../shared/ui/loading.actions';
 import { Subscription } from 'rxjs';
 import { loadSinglePost } from '../../post/post.actions';
-import { loadShowHttpErrorSnack } from '../../shared/ui/snack-error.actions';
-import { isNullOrUndefined } from 'util';
+
 
 
 @Component({
@@ -18,30 +17,48 @@ import { isNullOrUndefined } from 'util';
 })
 export class PostDetailsComponent implements OnInit {
 
-  public post: PostI;
   public loading: boolean = false;
-  public ui_subscription = new Subscription();
+  private ui_subscription = new Subscription();
 
+  public post: PostI;
+  private postSubs$ = new Subscription();
+
+  private errorSubs$ = new Subscription();
 
   constructor(private activatedRoute: ActivatedRoute,
               private store: Store<AppState>) {
 
-    this.ui_subscription = this.store.select(getLoadingValue).subscribe(loading => this.loading = loading);
-
-    this.activatedRoute.params.subscribe((params: Params) => {
-      this.store.dispatch(loadSinglePost({postsId:params.id}))
-    });
-    this.store.select(getSinglePost).subscribe((post: PostI) => {
-      this.post = post;
-      this.store.dispatch(new deactivateLoading())
-    });
-    this.store.select(getOperationFailed).subscribe(console.log)
-  }
+    this.loadingSubscription();
+    this.getParamsAndLoadPost();
+    this.postSubscription();
+    this.errorSubscription();
+  };
 
   ngOnInit() { }
 
+  getParamsAndLoadPost() {
+    this.activatedRoute.params.subscribe((params: Params) => this.store.dispatch(loadSinglePost({ postsId: params.id })));
+  };
+
+  postSubscription() {
+    this.postSubs$ = this.store.select(getSinglePost).subscribe((post: PostI) => {
+      this.post = post;
+      this.store.dispatch(new deactivateLoading())
+    });
+  };
+
+  loadingSubscription() {
+    this.ui_subscription = this.store.select(getLoadingValue).subscribe(loading => this.loading = loading);
+  };
+
+  errorSubscription() {
+    this.errorSubs$ = this.store.select(getOperationFailed).subscribe(console.log);
+  }
+
   ngOnDestroy(): void {
     this.ui_subscription.unsubscribe();
-  }
+    this.postSubs$.unsubscribe();
+    this.errorSubs$.unsubscribe();
+  };
 
 }

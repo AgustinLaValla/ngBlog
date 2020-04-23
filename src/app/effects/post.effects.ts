@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, ofType, createEffect } from '@ngrx/effects'
 import { PostService } from 'src/app/services/post.service';
-import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/app.reducer';
+
 import { of } from 'rxjs';
 import { switchMap, map, catchError} from 'rxjs/operators';
 import { PostI } from 'src/app/shared/model/post.interface';
@@ -42,9 +41,7 @@ export class PostEffects {
         ofType(loadAddPost),
         switchMap(({ post, imagePost }) => of(this.postsService.addPost(post, imagePost)).pipe(
             map((imageUrl: string) => loadAddPostSuccess({ post, imageUrl })),
-            catchError((error: HttpErrorResponse) => switchMap((error:HttpErrorResponse) => {
-                return of(this.uiService.showSnack(error.statusText, 'Ok', 3500));
-            }))
+            catchError((error: HttpErrorResponse) => of(loadAddPostFailed(error)))
         ))
     ));
 
